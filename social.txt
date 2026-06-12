@@ -1,0 +1,27 @@
+==> Authentication
+    => register
+    => login
+    => logout (token blacklisting)
+    => [OTP based registration]
+
+==> post
+    => create
+    => can see the feed
+    => like posts (collection database)
+    => save post
+
+==> Users
+    => followers
+    => following
+
+
+
+
+==> User Schema
+    => userName
+    => password
+    => email
+    => bio
+    => followers Array
+    => following Array
+    => profile_image
