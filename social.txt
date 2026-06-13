@@ -5,7 +5,14 @@
     => [OTP based registration]
 
 ==> post
-    => create
+    => create 
+            {
+                caption: String,
+                img_url: String,
+                user: userId
+                createdAt: Date-time, 
+            }
+
     => can see the feed
     => like posts (collection database)
     => save post
