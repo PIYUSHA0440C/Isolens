@@ -17,22 +17,6 @@ const imagekit = new Imagekit({
 async function createPostController(req, res){
     console.log(req.body, req.file)
 
-    const token = req.cookies["jwt_token"];
-
-    if(!token) return res.status(401).json({
-        messsage: "Token not provided, Unauthorised Access"
-    })
-
-    let decoded = null;
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET)
-        
-    } catch (error) {
-        return res.status(401).json({
-            message: "Unauthorised Access"
-        })
-    }
-
     
     const file = await imagekit.files.upload({
         file: await toFile(Buffer.from(req.file.buffer), "image"),
@@ -43,7 +27,7 @@ async function createPostController(req, res){
     const post = await postModel.create({
         caption: req.body.caption,
         imgUrl: file.url,
-        user: decoded.id
+        user: req.user.id
     })
 
     res.status(201).json({
@@ -57,24 +41,8 @@ async function createPostController(req, res){
 
 async function getPostController(req, res) {
 
-    const token = req.cookies["jwt_token"];
-
-    if(!token) {
-        return res.status(401).json({
-            message: "Token not provided, Unauthorised Access"
-        })
-    }
-
-    let decoded;
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET)
-    } catch (error) {
-        return res.status(401).json({
-            message: "Unauthorised Access"
-        })
-    }
-
-    const userId = decoded.id;
+    
+    const userId = req.user.id;
 
     const posts = await postModel.find({
         user: userId
@@ -89,26 +57,9 @@ async function getPostController(req, res) {
 
 async function getPostDetails(req, res) {
     
-    const token = req.cookies["jwt_token"]
+    
 
-    if(!token) {
-        return res.status(401).json({
-            message: "Token not provided, Unauthorised Access"
-        })
-    }
-
-    let decoded;
-    try{
-
-        decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-    } catch (error) {
-        return res.status(401).json({
-            message: "Invalid Token, Unauthorised Access"
-        })
-    }
-
-    const userId = decoded.id;
+    const userId = req.user.id;
     const postId = req.params.postId;
 
     const post = await postModel.findById(postId);
