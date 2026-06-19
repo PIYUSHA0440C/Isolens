@@ -21,7 +21,7 @@ async function createPostController(req, res){
     const file = await imagekit.files.upload({
         file: await toFile(Buffer.from(req.file.buffer), "image"),
         fileName: "image",
-        folder:"Social-Posts"
+        folder:"social-Posts"
     })
     
     const post = await postModel.create({
