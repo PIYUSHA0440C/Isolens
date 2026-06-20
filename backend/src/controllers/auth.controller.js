@@ -2,6 +2,12 @@ const userModel = require('../models/user.model');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+
+/**
+ * @route POST /api/auth/register
+ * @description Register a user
+ * @access Public
+ */
 const registerController = async (req, res) => {
     const { username, email, password, bio, profileImage } = req.body;
 
@@ -48,8 +54,11 @@ const registerController = async (req, res) => {
         password: hashedPassword
     })
 
+
+    /* Generate JWT Token */
     const token = jwt.sign({
-        id: user._id
+        id: user._id,
+        username: user.username,
     }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
     res.cookie('jwt_token', token);
@@ -65,6 +74,12 @@ const registerController = async (req, res) => {
     })
 }
 
+
+/**
+ * @route POST /api/auth/login
+ * @description Login a user
+ * @access Public
+ */
 const loginController = async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -91,8 +106,11 @@ const loginController = async (req, res) => {
         })
     }
 
+
+    /* Generate JWT Token */
     const token = jwt.sign({
-        id: user._id
+        id: user._id,
+        username: user.username
     },
     process.env.JWT_SECRET,
     { expiresIn: "1d"})

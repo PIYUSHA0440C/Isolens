@@ -3,6 +3,7 @@ const Imagekit = require('@imagekit/nodejs')
 const { toFile } = require('@imagekit/nodejs')
 const jwt = require('jsonwebtoken')
 const { default: mongoose } = require('mongoose')
+const likeModel = require('../models/like.model')
 
 
 
@@ -11,9 +12,11 @@ const imagekit = new Imagekit({
 })
 
 
-
-// Controllers
-
+/**
+ * @route POST /api/posts/
+ * @desc Create a new post
+ * @access Private
+ */
 async function createPostController(req, res){
     console.log(req.body, req.file)
 
@@ -39,6 +42,11 @@ async function createPostController(req, res){
 }
 
 
+/**
+ * @route GET /api/posts/
+ * @desc Get all posts of the user
+ * @access Private
+ */
 async function getPostController(req, res) {
 
     
@@ -55,6 +63,11 @@ async function getPostController(req, res) {
 }
 
 
+/**
+ * @route GET /api/posts/details/:postId
+ * @desc Get details of a post
+ * @access Private
+ */
 async function getPostDetails(req, res) {
     
     
@@ -85,9 +98,50 @@ async function getPostDetails(req, res) {
 }
 
 
+/**
+ * @route POST /api/posts/like/:postId
+ * @desc Like a post
+ * @access Private
+ */
+async function likePostController(req, res) {
+    const userId = req.user.id;
+    const postId = req.params.postId;
+
+    const post = await postModel.findById(postId);
+
+    if(!post){
+        return res.status(404).json({
+            message: "Post not found"
+        })
+    }
+
+    const isAlreadyLiked = await likeModel.findOne({
+        post: postId,
+        userId: userId
+    })
+
+    if(isAlreadyLiked){
+        return res.status(400).json({
+            message: "Post already liked"
+        })
+    }
+
+    const like = await likeModel.create({
+        post: postId,
+        userId: userId 
+    })
+
+    res.status(200).json({
+        message: "Post liked successfully",
+        like
+    })
+}
+
+
 
 module.exports = {
     createPostController,
     getPostController,
-    getPostDetails
+    getPostDetails,
+    likePostController
 }

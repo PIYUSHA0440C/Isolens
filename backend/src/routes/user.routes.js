@@ -1,15 +1,15 @@
 const express = require('express')
-cons
+const identifyUser = require('../middlewares/auth.middleware')
 const userController   = require('../controllers/user.controller')
 
 const userRouter = express.Router();
 
-/**
- * @route POST /api/users/follow/:userId
- * @description Follow a user
- * @access Private
- */
-userRouter.post('/follow/:userId', userController.followUserController)
+/* Follow api */
+userRouter.post('/follow/:userId', identifyUser,userController.followUserController);
+
+
+/* Unfollow api */
+userRouter.post('/unfollow/:userId', identifyUser, userController.unfollowUserController);
 
 
 module.exports = userRouter
