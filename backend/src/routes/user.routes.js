@@ -11,5 +11,11 @@ userRouter.post('/follow/:userId', identifyUser,userController.followUserControl
 /* Unfollow api */
 userRouter.post('/unfollow/:userId', identifyUser, userController.unfollowUserController);
 
+/* Get Follow Requests */
+userRouter.get('/follow-requests', identifyUser, userController.getFollowRequestsController);
+
+/* Accept or Reject Follow Request */
+userRouter.post('/follow-requests/:followerId/:action', identifyUser, userController.handleFollowRequestController);
+
 
 module.exports = userRouter
