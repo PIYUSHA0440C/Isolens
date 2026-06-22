@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParsar = require('cookie-parser')
+const cors = require('cors')
 
 
 const app = express();
@@ -7,6 +8,10 @@ const app = express();
 /* middlewared */
 app.use(express.json());
 app.use(cookieParsar());
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5173'
+}));
 
 
 /* require routes */
