@@ -112,8 +112,8 @@ const loginController = async (req, res) => {
         id: user._id,
         username: user.username
     },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d"})
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" })
 
 
     res.cookie("jwt_token", token)
