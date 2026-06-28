@@ -20,10 +20,10 @@ const Login = () => {
     )
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    handleLogin(username, password)
+    await handleLogin(username, password)
       .then(res => {
         console.log(res)
         navigate('/')
@@ -45,7 +45,7 @@ const Login = () => {
             type="password" name="password" id="" placeholder='Enter Password' />
 
 
-          <button>Login </button>
+          <button className='button primary-button'>Login </button>
         </form>
 
         <p>Don't Have an account? <Link className='toggleAuthForm' to="/register">register</Link></p>

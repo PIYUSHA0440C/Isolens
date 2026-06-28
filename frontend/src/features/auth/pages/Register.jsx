@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useState } from 'react'
 import axios from 'axios'
+import useAuth from '../hooks/useAuth'
 
 const Register = () => {
 
@@ -10,19 +11,25 @@ const Register = () => {
   const [bio, setBio] = useState("")
   const [password, setPassword] = useState("")
 
-  async function handleSubmit(e) {
+  const { loading, handleRegister } = useAuth();
+  const navigate = useNavigate();
+
+  if(loading) {
+    return (
+      <main>
+        <h1>Loading....</h1>
+      </main>
+    )
+  }
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:3000/api/auth/register', {
-      username: username,
-      email: email,
-      bio: bio,
-      password: password
-    }, {
-      withCredentials: true
-    })
-    .then((response) => {
-      console.log(response.data);
+    await handleRegister(username, email, bio, password)
+    .then(res => {
+      console.log(res);
+      navigate('/');
     })
   }
 
@@ -47,7 +54,7 @@ const Register = () => {
           <input 
           onInput={(e) => {setPassword(e.target.value)}}
           type="password" name="password" id="" placeholder='Enter Password' />
-          <button>Register </button>
+          <button className='button primary-button'>Register </button>
         </form>
 
         <p>Already have an account? <Link className='toggleAuthForm' to="/login">login</Link></p>

@@ -8,47 +8,8 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    
-    const handleLogin = async (email, password) => {
-
-        setLoading(true);
-
-        try {
-            const response = await login(email, password);
-            setUser(response.user);
-            return response.user;
-        }
-        catch (err) {
-            console.log(err);
-        }
-        finally {
-            setLoading(false);
-        }
-    }
-
-
-    const handleRegister = async (username, email, bio, password) => {
-        
-        setLoading(true);
-
-        try {
-
-            const response = await register(username, email, bio, password);
-            setUser(response.user);
-            return response.user;
-            
-        } catch (error) {
-            console.log(error)
-            
-        } finally {
-            setLoading(false);
-        }
-
-    }
-
-
     return (
-        <AuthContext.Provider value={{user, loading, handleLogin, handleRegister}}>
+        <AuthContext.Provider value={{user, setUser, loading, setLoading}}>
             {children}
         </AuthContext.Provider>
     )

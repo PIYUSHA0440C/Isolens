@@ -138,10 +138,26 @@ async function likePostController(req, res) {
 }
 
 
+/**
+ * @route GET /api/posts/feed
+ * @desc Get the feed of posts created in DB
+ * @access Private
+ */
+async function getFeedController(req, res){
+    const posts = await postModel.find().populate('user');
+
+    res.status(200).json({
+        message: "Feed fetched successfully",
+        posts
+    })
+}
+
+
 
 module.exports = {
     createPostController,
     getPostController,
     getPostDetails,
-    likePostController
+    likePostController,
+    getFeedController
 }

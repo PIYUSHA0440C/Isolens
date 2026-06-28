@@ -11,21 +11,6 @@ const jwt = require('jsonwebtoken')
 const registerController = async (req, res) => {
     const { username, email, password, bio, profileImage } = req.body;
 
-    // const isUserExistsByEmail = await userModel.findOne({ email });
-
-    // if(isUserExistsByEmail) {
-    //     return res.status(409).json({
-    //         messsage: "User with this email already exists "
-    //     })
-    // }
-
-    // const isUserExistsByUsername = await userModel.findOne({username});
-
-    // if(isUserExistsByUsername) {
-    //     return res.status(409).json({
-    //         message: "User with this username already exists"
-    //     })
-    // }
 
     const isUserAlreadyExists = await userModel.findOne({
         $or: [
@@ -40,8 +25,8 @@ const registerController = async (req, res) => {
         })
     }
 
-    // const hashedPassword = crypto.createHash('sha256').update(password).digest('hex')
 
+    // const hashedPassword = crypto.createHash('sha256').update(password).digest('hex')
 
     // Password Hashed
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -88,7 +73,7 @@ const loginController = async (req, res) => {
             { username: username },
             { email: email }
         ]
-    })
+    }).select("+password")
 
     if (!user) {
         return res.status(404).json({
