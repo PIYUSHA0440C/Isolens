@@ -16,6 +16,7 @@ const useAuth = () => {
         try {
             const response = await login(email, password);
             setUser(response.user);
+            return response;
         }
         catch (error) {
             console.error(error);
@@ -30,6 +31,7 @@ const useAuth = () => {
         setLoading(true);
         try {
             const response = await register(username, email, bio, password);
+            return response;
         }
         catch (error) {
             console.error(error);
