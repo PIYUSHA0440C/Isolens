@@ -12,9 +12,26 @@ export async function getFeed() {
         const response = await api.get('/feed')
         return response.data;
     }
-
     catch (error) {
         console.error('Error fetching feed');
+        throw error;
+    }
+}
+
+export async function createPost(imageFile, caption) {
+    
+    const formData = new FormData();
+
+    formData.append("image", imageFile);
+    formData.append("caption", caption);
+
+    try {
+        const response = await api.post('/', formData);
+
+        return response.data;
+    } 
+    catch (error) {
+        console.error('Error creating post');
         throw error;
     }
 }

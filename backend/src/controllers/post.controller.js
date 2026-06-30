@@ -147,7 +147,7 @@ async function getFeedController(req, res){
 
     const user = req.user.id;
 
-    const posts = await Promise.all((await postModel.find().populate('user').lean())
+    const posts = await Promise.all((await postModel.find().populate('user').sort({ createdAt: -1 }).lean())
     .map(async (post) => {
 
         const isLiked = await likeModel.findOne({
