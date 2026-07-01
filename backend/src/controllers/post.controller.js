@@ -139,6 +139,34 @@ async function likePostController(req, res) {
 
 
 /**
+ * @route POST /api/posts/unlike/:postId
+ * @desc Unlike a post
+ * @access Private
+ */
+async function unlikePostController(req, res) {
+    const postId = req.params.postId;
+    const userId = req.user.id;
+
+    const isLiked = await likeModel.findOne({
+        post: postId,
+        userId: userId
+    })
+
+    if(!isLiked) {
+        return res.status(400).json({
+            message: "Post is not liked yet"
+        })
+    }
+
+    await likeModel.findByIdAndDelete(isLiked._id);
+
+    res.status(200).json({
+        message: "Post unliked successfully"
+    })
+}
+
+
+/**
  * @route GET /api/posts/feed
  * @desc Get the feed of posts created in DB
  * @access Private
@@ -173,5 +201,6 @@ module.exports = {
     getPostController,
     getPostDetails,
     likePostController,
-    getFeedController
+    getFeedController,
+    unlikePostController
 }

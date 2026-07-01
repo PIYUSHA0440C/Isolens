@@ -35,3 +35,27 @@ export async function createPost(imageFile, caption) {
         throw error;
     }
 }
+
+export async function likePost(postId){
+    try {
+        const response = await api.post(`/like/${postId}`)
+
+        return response.data;
+    }
+    catch (error) {
+        console.error('Error liking post');
+        throw error;
+    }
+}
+
+export async function unlikePost(postId){
+    try {
+        const response = await api.post(`/unlike/${postId}`)
+
+        return response.data;
+    }
+    catch (error) {
+        console.error('Error unliking post');
+        throw error;
+    }
+}
